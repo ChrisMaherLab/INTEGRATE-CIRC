@@ -1,6 +1,6 @@
 # INTEGRATE-Circ
 ***
-INTEGRATE-Circ is a fusion junction detection tool, capable of identifying gene fusion transcripts and various isoforms that may result from these fusions, including fusion-derived circRNA (fcircRNA). INTEGRATE-Circ is an exptension of the algorithm employed by INTEGRATE, which can be found [here](https://github.com/ChrisMaherLab/INTEGRATE).
+INTEGRATE-Circ is a fusion junction detection tool, capable of identifying gene fusion transcripts and various isoforms that may result from these fusions, including fusion-derived circRNA (fcircRNA). INTEGRATE-Circ is an extension of the algorithm employed by INTEGRATE, which can be found [here](https://github.com/ChrisMaherLab/INTEGRATE).
 
 INTEGRATE-Circ is developed at the [Christopher Maher Lab](http://www.maherlab.com/) at [Washington University in St. Louis](http://www.wustl.edu).
 ***
