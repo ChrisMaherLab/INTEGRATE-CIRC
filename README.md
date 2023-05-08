@@ -48,7 +48,7 @@ Integrate-Circ fusion \
 ```
 By default, all outputs are placed in the current working directory.
 
-If mapped and unmapped RNA reads are in the same file, simply provide that same file twice. Both DNA files are optional. ```Integrate-circ fusion -h``` can be run for a more complete description of parameters, which are also described below.
+If mapped and unmapped RNA reads are in the same file, simply provide that same file twice. Both DNA files are optional. ```Integrate-Circ fusion -h``` can be run for a more complete description of parameters, which are also described below.
 
 ## Output
 The INTEGRATE-circ fusion command outputs the following files:
