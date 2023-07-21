@@ -87,7 +87,6 @@ int Alignment::global2(vector<char>& seqExon, vector<char>& seqRead, int& a, int
 
 	for(int i=1;i<=seqExon.size();i++)
 	{
-	    //cout<<"i="<<i<<endl;
 		for(int j=1;j<=seqRead.size();j++)
 			{
 
@@ -380,7 +379,6 @@ int Alignment::overLap2(vector<char>& seqExon, vector<char>& seqRead, int& pos, 
 
 	for(int i=1;i<=seqRead.size();i++)
 	{
-	    //cout<<"i="<<i<<endl;
 		for(int j=1;j<=seqExon.size();j++)
 			{
 
@@ -474,7 +472,6 @@ int Alignment::overLap2(vector<char>& seqExon, vector<char>& seqRead, int& pos, 
 //readId if mapped then store it;
 
 int Alignment::runExonMap(Gene & g, int geneId, Reference & ref ,bam1_t* b,int readId, vector<map_emt_t> & mets, vector<map_emt_t> & metsM, int size1, int size2 ) {
-	cout<<"in runExonMap"<<endl;
 	int isMapped=0;
 
 	vector<char> seqRead;
@@ -497,7 +494,6 @@ int Alignment::runExonMap(Gene & g, int geneId, Reference & ref ,bam1_t* b,int r
 	list<exon_map_t> exons;
 	g.getExons(geneId, exons);
 
-	cout<<"Get exons"<<exons.size()<<endl;
 
 
 	for(list<exon_map_t>::iterator it=exons.begin();it!=exons.end();it++)
@@ -723,13 +719,11 @@ int Alignment::runExonMap(Gene & g, int geneId, Reference & ref ,bam1_t* b,int r
 
 	}
 
-	cout<<"isMapped="<<isMapped<<endl;
 
 	return isMapped;
 }
 */
 int Alignment::runBWTSplitMap(Gene& g, int geneId, bam1_t* b, int anchorStrand, vector<map_emt_t2>& mets, vector<map_emt_t2>& metsM, myFind2 & mf2, int & isLeftSmall, int mmdd) {
-//cout<<"runBWT1"<<endl;
 	int strand=1-anchorStrand;
 	int seqLen=b->core.l_qseq;
 
@@ -751,7 +745,6 @@ int Alignment::runBWTSplitMap(Gene& g, int geneId, bam1_t* b, int anchorStrand, 
 		BWT * bwt=g.getBWT(geneId);
 		isMap=bwt->inExactSplitMap(k,l,seqRead,seqLen,mapped,10,mmdd,mismatch,insertion,deletion,mf2);
 
-		//cout<<k<<" "<<l<<endl;
 		
 		if( seqLen-mapped < 10)
 			isLeftSmall=1;
@@ -781,7 +774,6 @@ int Alignment::runBWTSplitMap(Gene& g, int geneId, bam1_t* b, int anchorStrand, 
 
 				mets.push_back(met);
 
-//cout<<met.strand<<" "<<met.a<<" "<<met.b<<" "<<met.pos<<endl;
 
 			}
 			/*
@@ -816,7 +808,6 @@ int Alignment::runBWTSplitMap(Gene& g, int geneId, bam1_t* b, int anchorStrand, 
 						met.pos=(g.getGene(geneId))->leftLimit+off;
 
 						metsM.push_back(met);
-						//cout<<met.strand<<" "<<met.a<<" "<<met.b<<" "<<met.pos<<endl;
 
 					}
 				}
@@ -863,7 +854,6 @@ int Alignment::runBWTSplitMap(Gene& g, int geneId, bam1_t* b, int anchorStrand, 
 				mets.push_back(met);
 
 
-//cout<<met.strand<<" "<<met.a<<" "<<met.b<<" "<<met.pos<<endl;
 			}
 
 			/*
@@ -899,7 +889,6 @@ int Alignment::runBWTSplitMap(Gene& g, int geneId, bam1_t* b, int anchorStrand, 
 
 						metsM.push_back(met);
 
-						//cout<<met.strand<<" "<<met.a<<" "<<met.b<<" "<<met.pos<<endl;
 					}
 				}
 			}
@@ -916,7 +905,6 @@ int Alignment::runBWTSplitMap(Gene& g, int geneId, bam1_t* b, int anchorStrand, 
 
 int Alignment::runBWTSplitMap2(Gene& g, int geneId, bam1_t* b, int imgStrand, vector<map_emt_t2>& mets, vector<map_emt_t2>& metsM, myFind2 & mf2, int & isLeftSmall, int mmdd) {
 
-//cout<<"runBWT2"<<endl;
 
 	int strand=1-imgStrand;
 	int seqLen=b->core.l_qseq;
@@ -969,7 +957,6 @@ int Alignment::runBWTSplitMap2(Gene& g, int geneId, bam1_t* b, int imgStrand, ve
 
 				mets.push_back(met);
 
-//cout<<met.strand<<" "<<met.a<<" "<<met.b<<" "<<met.pos<<endl;
 			}
 
 			/*
@@ -1004,7 +991,6 @@ int Alignment::runBWTSplitMap2(Gene& g, int geneId, bam1_t* b, int imgStrand, ve
 
 						metsM.push_back(met);
 
-						//cout<<met.strand<<" "<<met.a<<" "<<met.b<<" "<<met.pos<<endl;
 					}
 				}
 
@@ -1050,7 +1036,6 @@ int Alignment::runBWTSplitMap2(Gene& g, int geneId, bam1_t* b, int imgStrand, ve
 
 				mets.push_back(met);
 
-//cout<<met.strand<<" "<<met.a<<" "<<met.b<<" "<<met.pos<<endl;
 			}
 
 			/*
@@ -1085,7 +1070,6 @@ int Alignment::runBWTSplitMap2(Gene& g, int geneId, bam1_t* b, int imgStrand, ve
 
 						metsM.push_back(met);
 
-						//cout<<met.strand<<" "<<met.a<<" "<<met.b<<" "<<met.pos<<endl;
 					}
 				}
 			}
@@ -1101,7 +1085,6 @@ int Alignment::runBWTSplitMap2(Gene& g, int geneId, bam1_t* b, int imgStrand, ve
 
 
 int Alignment::runBWTSplitMap(Gene& g, int geneId, vector<char> & seq , int anchorStrand, vector<map_emt_t2>& mets, vector<map_emt_t2>& metsM, myFind2 & mf2, int & isLeftSmall, int mmdd) {
-//cout<<"runBWT1"<<endl;
 	int strand=1-anchorStrand;
 	int seqLen=seq.size();
 
@@ -1113,21 +1096,16 @@ int Alignment::runBWTSplitMap(Gene& g, int geneId, vector<char> & seq , int anch
 	for(int aa=0;aa<seqLen;aa++)
 	{
 		seqRead[aa]=seq[aa];
-//cout<<seqRead[aa];
 	}
-//cout<<endl;
 
-//cout<<"gene"<<g.getStrand(geneId)<<" "<<g.getName2(geneId)<<endl;
 
 
 	if(strand==0)
 	{
-//cout<<"strand=0"<<endl;
 		int k,l,mapped,mismatch,insertion,deletion;
 		BWT * bwt=g.getBWT(geneId);
 		isMap=bwt->inExactSplitMap(k,l,seqRead,seqLen,mapped,10,mmdd,mismatch,insertion,deletion,mf2);
 
-		//cout<<k<<" "<<l<<endl;
 
                 if( seqLen-mapped < 10)
                         isLeftSmall=1;
@@ -1157,7 +1135,6 @@ int Alignment::runBWTSplitMap(Gene& g, int geneId, vector<char> & seq , int anch
 
 				mets.push_back(met);
 
-//cout<<met.strand<<" "<<met.a<<" "<<met.b<<" "<<met.pos<<endl;
 
 			}
 			/*
@@ -1192,7 +1169,6 @@ int Alignment::runBWTSplitMap(Gene& g, int geneId, vector<char> & seq , int anch
 						met.pos=(g.getGene(geneId))->leftLimit+off;
 
 						metsM.push_back(met);
-						//cout<<met.strand<<" "<<met.a<<" "<<met.b<<" "<<met.pos<<endl;
 
 					}
 				}
@@ -1206,7 +1182,6 @@ int Alignment::runBWTSplitMap(Gene& g, int geneId, vector<char> & seq , int anch
 	}
 	else
 	{
-//cout<<"strand=1"<<endl;
 		int k,l,mapped,mismatch,insertion,deletion;
 		BWT * rbwt=g.getRBWT(geneId);
 		isMap=rbwt->inExactSplitMap(k,l,seqRead,seqLen,mapped,10,mmdd,mismatch,insertion,deletion,mf2);
@@ -1241,7 +1216,6 @@ int Alignment::runBWTSplitMap(Gene& g, int geneId, vector<char> & seq , int anch
 				mets.push_back(met);
 
 
-//cout<<met.strand<<" "<<met.a<<" "<<met.b<<" "<<met.pos<<endl;
 			}
 
 			/*
@@ -1277,7 +1251,6 @@ int Alignment::runBWTSplitMap(Gene& g, int geneId, vector<char> & seq , int anch
 
 						metsM.push_back(met);
 
-						//cout<<met.strand<<" "<<met.a<<" "<<met.b<<" "<<met.pos<<endl;
 					}
 				}
 			}
@@ -1294,7 +1267,6 @@ int Alignment::runBWTSplitMap(Gene& g, int geneId, vector<char> & seq , int anch
 
 int Alignment::runBWTSplitMap2(Gene& g, int geneId, vector<char> & seq, int imgStrand, vector<map_emt_t2>& mets, vector<map_emt_t2>& metsM, myFind2 & mf2, int & isLeftSmall, int mmdd) {
 
-//cout<<"runBWT2"<<endl;
 
 	int strand=1-imgStrand;
 	int seqLen=seq.size();
@@ -1310,9 +1282,7 @@ int Alignment::runBWTSplitMap2(Gene& g, int geneId, vector<char> & seq, int imgS
 
 		char chara=getCharComp(seq[aa]);
 		seqRead[x++]=chara;
-//cout<<chara;
 	}
-//cout<<endl;
 
 	if(strand==1)
 	{
@@ -1348,7 +1318,6 @@ int Alignment::runBWTSplitMap2(Gene& g, int geneId, vector<char> & seq, int imgS
 
 				mets.push_back(met);
 
-//cout<<met.strand<<" "<<met.a<<" "<<met.b<<" "<<met.pos<<endl;
 			}
 			/*
 			int left=seqLen-mapped;
@@ -1382,7 +1351,6 @@ int Alignment::runBWTSplitMap2(Gene& g, int geneId, vector<char> & seq, int imgS
 
 						metsM.push_back(met);
 
-						//cout<<met.strand<<" "<<met.a<<" "<<met.b<<" "<<met.pos<<endl;
 					}
 				}
 
@@ -1426,7 +1394,6 @@ int Alignment::runBWTSplitMap2(Gene& g, int geneId, vector<char> & seq, int imgS
 
 				mets.push_back(met);
 
-//cout<<met.strand<<" "<<met.a<<" "<<met.b<<" "<<met.pos<<endl;
 			}
 
 			/*
@@ -1461,7 +1428,6 @@ int Alignment::runBWTSplitMap2(Gene& g, int geneId, vector<char> & seq, int imgS
 
 						metsM.push_back(met);
 
-						//cout<<met.strand<<" "<<met.a<<" "<<met.b<<" "<<met.pos<<endl;
 					}
 				}
 			}
@@ -1480,12 +1446,10 @@ int Alignment::global(vector<char> &seq, int tail, int tail_pos, int tid, uint32
 		uint32_t &aa, uint32_t &bb, int &miss, int &gap, int & score)
 {
 
-	//cout<<"in global"<<tid<<" "<<tail_pos<<" "<<left<<" "<<right<<endl;
 
 	uint32_t refaa=ref.to_ref_pos(tid,left);
 	uint32_t refbb=ref.to_ref_pos(tid,right);
 
-	//cout<<"in global refaabb"<<refaa<<" "<<refbb<<" "<<endl;
 
 
 	int seqStart;//with 0
@@ -1535,7 +1499,6 @@ int Alignment::global(vector<char> &seq, int tail, int tail_pos, int tid, uint32
 
 	for(i=1;i<=tail;i++)
 	{
-        //cout<<"i="<<i<<endl;
 		for(j=1;j<=length2;j++)
 		{
 
@@ -1579,7 +1542,6 @@ int Alignment::global(vector<char> &seq, int tail, int tail_pos, int tid, uint32
     int nb=0;
 
 
-    //cout<<"len2="<<length2<<" f="<<F[tail][length2]<<endl; 
     for(j=length2;j>=1;j--)
     {
         if(F[tail][j]>=low)
@@ -1589,8 +1551,6 @@ int Alignment::global(vector<char> &seq, int tail, int tail_pos, int tid, uint32
         }
     }
 ////
-//cout<<"++++++++++++"<<endl;
-//cout<<nb<<endl;
     bb=ref.to_chr_pos(tid,refaa+nb-1);
 
     score=F[na][nb];
@@ -1621,26 +1581,12 @@ int Alignment::global(vector<char> &seq, int tail, int tail_pos, int tid, uint32
             gap++;
         }
     }
-    //cout<<"stat: "<<nb+1<<endl;
 
 
-    //cout<<"nb="<<nb<<endl;
-    //cout<<"refaa+nb="<<refaa+nb<<endl;
     aa=ref.to_chr_pos(tid,refaa+nb);
-    //cout<<"aa="<<aa<<endl;
     //found by bk
 
 /////
-/*
-cout<<"%%%%%%%%"<<endl;
-cout<<refaa<<endl;
-cout<<refbb<<endl;
-cout<<left<<endl;
-cout<<right<<endl;
-cout<<nb<<endl;
-cout<<aa<<endl;
-cout<<bb<<endl;
-*/
 
 	return 0;
 }
@@ -1651,13 +1597,11 @@ split_dna_t Alignment::globalAlign(split_dna_t& st, Gene& g, Reference& ref, reg
 	split_dna_t str=st;
 	str.isLeftFirst=2;
 
-	//cout<<"in Alignment"<<rtm.tid<<" "<<rtm.strand<<" "<<rtm.lpos<<" "<<rtm.rpos<<endl;
 
 	uint32_t aa, bb;
 	int miss, gap, score;
 	if(st.isLeftFirst==0 && rtm.strand==0)
 	{
-	//cout<<"case 1"<<endl;
 		vector<char> seq=st.seq;
 		global(seq, st.len1 , 0, rtm.tid, rtm.lpos, rtm.rpos, ref, aa, bb, miss, gap, score);
 		if(score>=10 && miss+gap<=maxError)
@@ -1670,7 +1614,6 @@ split_dna_t Alignment::globalAlign(split_dna_t& st, Gene& g, Reference& ref, reg
 		}
 	}else if(st.isLeftFirst==0 && rtm.strand==1)
 	{
-	//cout<<"case 2"<<endl;
 		vector<char> seq;
 		for(int i=0;i<st.seq.size();i++)
 		{
@@ -1688,7 +1631,6 @@ split_dna_t Alignment::globalAlign(split_dna_t& st, Gene& g, Reference& ref, reg
 		}
 	}else if(st.isLeftFirst==1 && rtm.strand==0)
 	{
-	//cout<<"case 3"<<endl;
 		vector<char> seq;
 		for(int i=0;i<st.seq.size();i++)
 		{
@@ -1706,7 +1648,6 @@ split_dna_t Alignment::globalAlign(split_dna_t& st, Gene& g, Reference& ref, reg
 	}
 	else
 	{
-	//cout<<"case 4"<<endl;
 		vector<char> seq;
                 for(int i=0;i<st.seq.size();i++)
                 {
@@ -1722,7 +1663,6 @@ split_dna_t Alignment::globalAlign(split_dna_t& st, Gene& g, Reference& ref, reg
 			return st;
 		}
 	}
-	//cout<<"not map"<<endl;
 	return str;
 }
 
