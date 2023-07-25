@@ -133,7 +133,3 @@ If having rna normal only or having both rna and dna normal data sets. These dat
 e.g. Integrate-Circ fusion -normal (options) reference.fasta annotation.txt directory_to_bwt accepted_hits.normal.bam unmapped.normal.bam (dna.normal.bam)
 ```
 
-## Expected run time 
-In our initial benchmarking, INTEGRATE-Circ  was run on a big memory blade with 32 Intel Xeon CPU E5-2640s with 400G of memory and was able to process input whole genome sequencing data with ~200 million reads in approximately 1.5 hours. This is comparable to the original INTEGRATE tool, which was also run on 32 Intel Xeon CPU E5-2640s with 400G of memory and was able to analyze ~350 million sequencing reads in approximately 8 hours.
-
-
