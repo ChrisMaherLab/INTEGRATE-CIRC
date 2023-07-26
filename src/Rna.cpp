@@ -2210,10 +2210,10 @@ int Rna::hasGoodEncompass(Gene & g, split_rna_t & st, vector<int> enIds)
 
 int Rna::clusterAndRemove(Gene & g, vector<int> const& spIds,  vector<int> const& enIds,  int cutoff, int gid1, int gid2, int bacc)
 {
-    cout<<"clusterAndRemove"<<g.getName2(gid1)<<" "<<g.getName2(gid2)<<endl;
+    //cout<<"clusterAndRemove"<<g.getName2(gid1)<<" "<<g.getName2(gid2)<<endl;
 
-    cout<<"spanning size="<<spIds.size()<<endl;
-    cout<<"encompassing size="<<enIds.size()<<endl;
+    //cout<<"spanning size="<<spIds.size()<<endl;
+    //cout<<"encompassing size="<<enIds.size()<<endl;
 
 
     if(spIds.size()<=0)
@@ -2376,7 +2376,7 @@ int Rna::clusterAndRemove(Gene & g, vector<int> const& spIds,  vector<int> const
 
                     if(hasMaxSmall==1 && phr<=0.4 && isBoth==1 && countPos(tmp2)>=localCutOff && sameRead==0 && !isInOne)
                     {
-cout<<"in here7.5"<<endl;
+//cout<<"in here7.5"<<endl;
                     	if(hasGoodEncompass(g,sprna[tmp[j-1].spId],enIds)==1)
                     	{
 

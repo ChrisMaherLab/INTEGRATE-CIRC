@@ -60,12 +60,22 @@ bool my_vcf_func(vcf_t i, vcf_t j)
 
 }
 
+std::string BreakPoint::createFilename(char* dir, char* file){
+	std::string filename;
+	char* divider = "/";
+	filename = dir;
+	filename += divider;
+	filename += file;
+	return filename;
+}
 
-int BreakPoint::getBreakPoints(vector<break_point_record_t> & bkvec, char * filename,char * filename1,char * filename2, char * refname, Reference & ref, char * sample_name){
+int BreakPoint::getBreakPoints(vector<break_point_record_t> & bkvec, char * file,char * file1,char * file2, char * refname, Reference & ref, char * sample_name, char* dir){
  
     //cout<<"here 1"<<endl;
+    std::string filename = createFilename(dir,file);
     ofstream outFile(filename);
     //ofstream outFile1(filename1);
+    std::string filename2 = createFilename(dir,file2);
     ofstream outFile2(filename2);
     
     outFile<<"#5P\t3P\tChr1\tRNA_BK1\tExon_BK1\tChr2\tRNA_BK2\tExon_BK2\tWGS_BK1\tWGS_BK2\n";

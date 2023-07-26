@@ -49,9 +49,9 @@ public:
 	int searchResult(int geneId1,int geneId2,result_t & result);
 	result_t * getOneResult(int index);
 	int	printOneResult(int index, ofstream & outFile, Reference & ref, int isRunningNormal);
-	int printAllResult(char * filename, Reference & ref,int isRunningNormal);
+	int printAllResult(char * file, Reference & ref,int isRunningNormal, char* dir);
 	int getTiers(double pn);
-	int printSummary(char * filename, Gene & g, int isRunningNormal, int largeNum);
+	int printSummary(char * filename, Gene & g, int isRunningNormal, int largeNum, char* dir);
 	int checkALLPrime(Gene & g);
 	
 	void checkMultiJunction(int index, Gene & g); //New
@@ -72,7 +72,7 @@ public:
 	int combineRecord(Gene & g);
 
 
-	int printExons(char * filename, Gene & g, Reference & ref, int isRunningNormal, char * bkfile, char * bkfileBEDPE, char * bkfileVCF, char * refname, char * sample_name);
+	int printExons(char * file, Gene & g, Reference & ref, int isRunningNormal, char * bkfile, char * bkfileBEDPE, char * bkfileVCF, char * refname, char * sample_name, char* dir);
 	
 	//copy and modified from printExons from 0.1.c and rm //bk and change
         int getAllJunctionsStep1(Gene& g, Reference & ref);
@@ -80,9 +80,11 @@ public:
         int getAllJunctionsStep3(char * filename, Gene& g, Reference & ref);
         int getAllJunctionsStep4(Gene& g, Reference & ref);
         int getAllJunctionsStep5(Gene& g, Reference & ref);
-        int getAllJunctionsStep6(char * filename, Gene& g, Reference & ref);
+        int getAllJunctionsStep6(char * file, Gene& g, Reference & ref, char* dir);
 	
-		int printFcirc(std::string, Gene& g, Reference & ref);
+		int printFcirc(char* file, Gene& g, Reference & ref, char* dir);
+
+	std::string createFilename(char* dir, char* file);
 };
 
 

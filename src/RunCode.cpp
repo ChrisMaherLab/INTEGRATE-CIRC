@@ -7,7 +7,14 @@
 
 #include "RunCode.h"
 
-
+//OS agnostic method for directory creation
+#if __cplusplus < 201703L
+#include <experimental/filesystem>
+	namespace fs = std::experimental::filesystem;
+#else
+#include <filesystem>
+	namespace fs = std::filesystem;
+#endif
 
 
 RunCode::RunCode() {
@@ -172,21 +179,21 @@ void usageFusion()
 	cout<<"Integrate-circ fusion (options) reference.fasta annotation.txt directory_to_bwt accepted_hits.bam unmapped.bam (dna.tumor.bam dna.normal.bam)\n";
 	cout<<endl;
 	cout<<"options: -cfn      integer : Cutoff of spanning RNA-Seq reads for fusions with non-canonical"<<endl;
-	cout<<"                             exonic boundaries.                                                         default: 3"<<endl;
+	cout<<"                             exonic boundaries                                                          default: 3"<<endl;
 	cout<<"         -rt       float   : Normal dna / tumor dna ratio. If the ratio is less than"<<endl;
     cout<<"                             this value, then dna reads from the normal dna data set "<<endl;
-	cout<<"                             supporting a fusion candidates are ignored.                                default: 0.0"<<endl;
+	cout<<"                             supporting a fusion candidates are ignored                                 default: 0.0"<<endl;
 	cout<<"         -minIntra integer : If only having RNA reads, a chimera with two adjacent"<<endl; 
     cout<<"                             genes in order is annotated as intra_chromosomal rather than "<<endl;
 	cout<<"                             read_through if the distance between the two genes is larger than"<<endl; 
-	cout<<"                             this value.                                                                default: 400000"<<endl; 
-	cout<<"         -minW     float   : Mininum weight for the encompassing rna reads on an edge.                  default: 2.0"<<endl; 
+	cout<<"                             this value                                                                 default: 400000"<<endl; 
+	cout<<"         -minW     float   : Mininum weight for the encompassing rna reads on an edge                   default: 2.0"<<endl; 
 	cout<<"         -mb       integer : See subcommand \"mkbwt\"."<<endl; 
-	cout<<"                             This value can be larger than used by mkbwt.                               default: 10000000"<<endl;
-	cout<<"         -minDel   int     : minimum size of a deletion that can cause a fusion.                        default: 5000"<<endl;
-	cout<<"         -reads    string  : File to store all the reads.                                               default: reads.txt"<<endl;
-	cout<<"         -sum      string  : File to store summary.                                                     default: summary.tsv"<<endl;
-	cout<<"         -ex       string  : File to store exons for fusions with canonical exonic boundaries.          default: exons.tsv"<<endl;
+	cout<<"                             This value can be larger than used by mkbwt                                default: 10000000"<<endl;
+	cout<<"         -minDel   int     : minimum size of a deletion that can cause a fusion                         default: 5000"<<endl;
+	cout<<"         -reads    string  : File to store all the reads                                                default: reads.txt"<<endl;
+	cout<<"         -sum      string  : File to store summary                                                      default: summary.tsv"<<endl;
+	cout<<"         -ex       string  : File to store exons for fusions with canonical exonic boundaries           default: exons.tsv"<<endl;
 	cout<<"         -bk       string  : File to store breakpoints                                                  default: breakpoints.tsv"<<endl;
 	cout<<"         -vcf      string  : File to store breakpoints in vcf format                                    default: bk_sv.vcf"<<endl;
 	cout<<"         -fcirc    string  : File to store fcirc results in                                             default: fcirc.txt"<<endl;
@@ -194,6 +201,7 @@ void usageFusion()
 	cout<<"         -bacc     integer : max difference between spanning reads and annotation to decide canonical.  default: 1"<<endl;
     cout<<"         -largeNum integer : if a gene shows greater or equal to this number, remove it from results.   default: 4"<<endl;
     cout<<"         -sample   string  : sample name                                                                default: sample"<<endl;
+	cout<<"         -dir      string  : Name of directory to create for storing outputs.                           default: INTEGRATE_Circ_output"<<endl;
 	cout<<endl;
 	cout<<"This version of Integrate-circ works in the following situations:"<<endl;
 	cout<<"(1)having rna tumor, dna tumor, dna normal"<<endl;
@@ -763,6 +771,31 @@ int getOptForFusion(int argc, char * argv[], options_t & opt, int & opStart)
                         }
 			}
 
+		if(tmp.compare("-dir")==0)
+			{
+				if(i+1<argc)
+                        {
+
+                                
+                                opt.dir=argv[i+1];
+
+                                if(i+2<argc && i+2>opStart)
+                                        opStart=i+2;
+                                else
+                                {
+                                        usageFusion();
+                                }
+                        }
+                        else
+                        {
+                                cout<<"Please give a directory name after -dir"<<endl;
+                                exit(1);
+                        }
+			}
+
+		
+
+
 	}
 	return 0;
 }
@@ -810,7 +843,8 @@ int RunCode::runFindFusions(int argc, char * argv[]) {
             opt.filePeptide="peptides_normal.bedpe";
             opt.fileSmcRna="fusions_normal.bedpe";
 			opt.fcircFile="fcirc.txt";
- 			opt.sample_name="sample_normal";
+ 			opt.sample_name="SAMPLE";
+			opt.dir="INTEGRATE_Circ_output";
 		}
 		else
 		{
@@ -824,7 +858,8 @@ int RunCode::runFindFusions(int argc, char * argv[]) {
             opt.filePeptide="peptides.bedpe";//deprecated
             opt.fileSmcRna="junctions.bedpe";	
 			opt.fcircFile="fcirc.txt";
-			opt.sample_name="sample_tumor";
+			opt.sample_name="SAMPLE";
+			opt.dir="INTEGRATE_Circ_output";
  		}
 
 		getOptForFusion(argc,argv,opt,opStart);
@@ -1006,7 +1041,7 @@ int RunCode::runFindFusions(int argc, char * argv[]) {
 
 		cout<<"Getting hard cliped secondary reads' sequences ..."<<endl;
 		rna.getHardClipReads(g,mbw,th);
-		rna.doPrint(g);
+		//rna.doPrint(g);
 		//result.getResultSize();
 		cout<<(clock()-t)/CLOCKS_PER_SEC<<" seconds\n"<<endl;
 
@@ -1014,21 +1049,21 @@ int RunCode::runFindFusions(int argc, char * argv[]) {
 		cout<<"Mapping soft or hard clipped reads and reads that could be partially correctly mapped from BAM"<<endl;
 		rna.traversePartialRight(g, mbw, th, hc, mf2);
 		rna.handleTmpTopHatSplits(hc,g);
-		rna.doPrint(g);
+		//rna.doPrint(g);
 		//result.getResultSize();
 		cout<<(clock()-t)/CLOCKS_PER_SEC<<" seconds\n"<<endl;
 
 		t=clock();
 		cout<<"Getting anchors from unaligned reads"<<endl;
 		rna.getAnchors(g,mbw,th, hc);
-		rna.doPrint(g);
+		//rna.doPrint(g);
 		//result.getResultSize();
 		cout<<(clock()-t)/CLOCKS_PER_SEC<<" seconds\n"<<endl;
 
 		t=clock();
 		cout<<"Mapping the unmapped reads as split reads..."<<endl;
 		rna.mapPartialSplitBWT(argv[opStart+4],th,g,hc,mf2);
-		rna.doPrint(g);
+		//rna.doPrint(g);
 		//result.getResultSize();
 		cout<<"Total time : "<<(clock()-t)/CLOCKS_PER_SEC<<" seconds\n"<<endl;
 
@@ -1036,7 +1071,7 @@ int RunCode::runFindFusions(int argc, char * argv[]) {
 		t=clock();
 		cout<<"Handling mapped split reads..."<<endl;
 		rna.handleSpHits();
-		rna.doPrint(g);
+		//rna.doPrint(g);
 		//result.getResultSize();
 		//cout<<(clock()-t)/CLOCKS_PER_SEC<<" seconds\n"<<endl;
 
@@ -1044,7 +1079,7 @@ int RunCode::runFindFusions(int argc, char * argv[]) {
 		//t=clock();
 		//cout<<"cluster "<<endl;
 		rna.traverseCluster(g,opt.cfn,opt.bacc);
-		rna.doPrint(g);
+		//rna.doPrint(g);
 		//result.getResultSize();
 		//cout<<(clock()-t)/CLOCKS_PER_SEC<<" seconds\n"<<endl;
 
@@ -1053,7 +1088,7 @@ int RunCode::runFindFusions(int argc, char * argv[]) {
 		//t=clock();
 		//cout<<"print "<<endl;
 		rna.traversePrint(g,ref,result,opt.minIntra,opt.bacc);
-		rna.doPrint(g);
+		//rna.doPrint(g);
 		//result.getResultSize();
 		cout<<(clock()-t)/CLOCKS_PER_SEC<<" seconds\n"<<endl;
 
@@ -1095,17 +1130,20 @@ int RunCode::runFindFusions(int argc, char * argv[]) {
 
 		t=clock();
 		cout<<"Printing results..."<<endl;
+		//Create output directory
+		fs::create_directories(opt.dir);
+
 		result.getTiers(opt.rt);
-		result.printSummary(opt.fileSum, g, opt.isRunningNormal, opt.largeNum); //summary.tsv
-		result.printAllResult(opt.fileRead,ref,opt.isRunningNormal); //reads.txt
-		result.printExons(opt.fileEx,g,ref,opt.isRunningNormal, opt.bkFile, opt.bkFileBEDPE, opt.bkFileVCF, argv[opStart], opt.sample_name);//bkFileBEDPE is deprecated
+		result.printSummary(opt.fileSum, g, opt.isRunningNormal, opt.largeNum, opt.dir); //summary.tsv
+		result.printAllResult(opt.fileRead,ref,opt.isRunningNormal, opt.dir); //reads.txt
+		result.printExons(opt.fileEx,g,ref,opt.isRunningNormal, opt.bkFile, opt.bkFileBEDPE, opt.bkFileVCF, argv[opStart], opt.sample_name, opt.dir);//bkFileBEDPE is deprecated
 		
         result.getAllJunctionsStep4(g,ref);
         result.getAllJunctionsStep5(g,ref);
-        result.getAllJunctionsStep6(opt.fileSmcRna,g,ref);//Prints to junctions.bedpe (or renamed file)
+        result.getAllJunctionsStep6(opt.fileSmcRna,g,ref, opt.dir);//Prints to junctions.bedpe (or renamed file)
 		
 		
-		result.printFcirc(opt.fcircFile,g,ref);
+		result.printFcirc(opt.fcircFile,g,ref, opt.dir);
 		
 		cout<<(clock()-t)/CLOCKS_PER_SEC<<" seconds\n"<<endl;
 

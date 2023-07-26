@@ -21,6 +21,8 @@ make
 ```
 An executable file should now be located at ``` PATH_TO_TOOL/INTEGRATE-CIRC/build/bin/Integrate-Circ ```. To make this file easily accessible from other locations, update the $PATH variable using ```export PATH="PATH_TO_TOOL/INTEGRATE-CIRC/build/bin:$PATH" ``` at the command line.
 
+Note that INTEGRATE-Circ cannot be compiled by some older compilers (recommend version >12 of g++). If this is not your default, you can explicitly tell cmake to use this by installing an updated version and then specifying it by changing the `cmake ..` command above to `cmake .. -DCMAKE_CXX_COMPILER=<path_to_g++-12>`.
+
 ## Preparing Input
 Besides user-provided sequencing data, two input files are required for INTEGRATE-Circ.
 
@@ -65,7 +67,7 @@ Analysis of the example-data can be performed as follows. The example data inclu
 ```
 cd PATH_TO_TOOL
 mkdir example-data/bwts
-Integrate-Circ mkbwt example-data/chr21.fa -dir example-data/bwts
+Integrate-Circ mkbwt example-data/hg19.chr21.fa -dir example-data/bwts
 Integrate-Circ fusion \
 	example-data/hg19.chr21.fa \
 	example-data/hg19.chr21.annotation.txt \
@@ -92,28 +94,29 @@ Running ```INTEGRATE-Circ fusion -h``` gives the following information:
 Integrate-Circ fusion (options) reference.fasta annotation.txt directory_to_bwt accepted_hits.bam unmapped.bam (dna.tumor.bam dna.normal.bam)
 
 options: -cfn      integer : Cutoff of spanning RNA-Seq reads for fusions with non-canonical
-                             exonic boundaries.                                                         default: 3
+                             exonic boundaries                                                          default: 3
          -rt       float   : Normal dna / tumor dna ratio. If the ratio is less than
                              this value, then dna reads from the normal dna data set 
-                             supporting a fusion candidates are ignored.                                default: 0.0
+                             supporting a fusion candidates are ignored                                 default: 0.0
          -minIntra integer : If only having RNA reads, a chimera with two adjacent
                              genes in order is annotated as intra_chromosomal rather than 
                              read_through if the distance between the two genes is larger than
-                             this value.                                                                default: 400000
-         -minW     float   : Mininum weight for the encompassing rna reads on an edge.                  default: 2.0
-         -mb       integer : See subcommand "mkbwt".
+                             this value                                                                 default: 400000
+         -minW     float   : Mininum weight for the encompassing rna reads on an edge                   default: 2.0
+         -mb       integer : See subcommand "mkbwt" 
                              This value can be larger than used by mkbwt.                               default: 10000000
          -minDel   int     : minimum size of a deletion that can cause a fusion.                        default: 5000
-         -reads    string  : File to store all the reads.                                               default: reads.txt
-         -sum      string  : File to store summary.                                                     default: summary.tsv
-         -ex       string  : File to store exons for fusions with canonical exonic boundaries.          default: exons.tsv
+         -reads    string  : File to store all the reads                                                default: reads.txt
+         -sum      string  : File to store summary                                                      default: summary.tsv
+         -ex       string  : File to store exons for fusions with canonical exonic boundaries           default: exons.tsv
          -bk       string  : File to store breakpoints                                                  default: breakpoints.tsv
          -vcf      string  : File to store breakpoints in vcf format                                    default: bk_sv.vcf
          -fcirc    string  : File to store fcirc results in                                             default: fcirc.txt
          -bedpe    string  : File to store all fusions in SMC-RNA bedpe format                          default: junctions.bedpe
-         -bacc     integer : max difference between spanning reads and annotation to decide canonical.  default: 1
-         -largeNum integer : if a gene shows greater or equal to this number, remove it from results.   default: 4
+         -bacc     integer : max difference between spanning reads and annotation to decide canonical   default: 1
+         -largeNum integer : if a gene shows greater or equal to this number, remove it from results    default: 4
          -sample   string  : sample name                                                                default: sample
+         -dir      string  : Name of directory to create for storing outputs                            default: INTEGRATE_Circ_output
 
 This version of Integrate-Circ works in the following situations:
 (1)having rna tumor, dna tumor, dna normal

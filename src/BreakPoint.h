@@ -30,8 +30,8 @@ public:
     
     BreakPoint();
     virtual ~BreakPoint();
-	
-    int getBreakPoints(vector<break_point_record_t> & bkvec, char * filename,char * filename1,char * filename2,char * refname, Reference & ref, char* sample_name);
+	std::string createFilename(char* dir, char* file);
+    int getBreakPoints(vector<break_point_record_t> & bkvec, char * filename,char * filename1,char * filename2,char * refname, Reference & ref, char* sample_name, char* dir);
     
     int getOneBKRNA(break_point_record_t & bkt,Reference & ref);
   

@@ -507,8 +507,17 @@ int Reference::chrNameToIndex(string chrname)
 	}
 	catch(exception& e)
 	{
-		cerr << "Inquire a not existed reference sequence in chrNameToIndex. exception caught: " << e.what() << endl;
-		return 1;
+		try
+		{
+			//Try again with a 'chr' prefix
+			return nameIndex.at("chr" + chrname);
+		}
+		catch(exception& e)
+		{
+			cerr << "Inquire a not existed reference sequence in chrNameToIndex. exception caught: " << e.what() << endl;
+			return 1;
+		}
+
 	}
 
 	return 0;

@@ -326,7 +326,8 @@ int Result::printOneResult(int index, ofstream & outFile, Reference & ref, int i
 }
 
 //Goes to reads.txt by default
-int Result::printAllResult(char* filename, Reference & ref, int isRunningNormal) {
+int Result::printAllResult(char* file, Reference & ref, int isRunningNormal, char* dir) {
+	std::string filename = createFilename(dir, file);
 	ofstream outFile(filename);
 	outIndex=0;
 	for(int i=0;i<results.size();i++)
@@ -736,8 +737,17 @@ int Result::combineRecord(Gene & g)
 	return 0;
 }
 
+std::string Result::createFilename(char* dir, char* file){
+	std::string filename;
+	char* divider = "/";
+	filename = dir;
+	filename += divider;
+	filename += file;
+	return filename;
+}
 
-int Result::printSummary(char* filename, Gene & g, int isRunningNormal, int largeNum) {
+
+int Result::printSummary(char* filename, Gene & g, int isRunningNormal, int largeNum, char* dir) {
 
 	sort(results.begin(),results.end(),my_sort_result_func);
 
@@ -748,10 +758,10 @@ int Result::printSummary(char* filename, Gene & g, int isRunningNormal, int larg
 	removeMultiple(g,largeNum);
 	combineRecord(g);
 
+	std::string outfile = createFilename(dir, filename);
 
 
-
-	ofstream outFile(filename);
+	ofstream outFile(outfile);
 	{
 		outFile<<"Fusion_Candidate\t";
 		outFile<<"5_Prime\t";
@@ -1558,9 +1568,9 @@ int RefPrinter(Reference &ref, int tid, uint32_t aa, uint32_t bb, int strand, in
 
 
 //bkfileBEDPE is deprecated
-int Result::printExons(char* filename, Gene& g, Reference & ref, int isRunningNormal, char * bkfile, char * bkfileBEDPE, char * bkfileVCF, char * refname, char * sample_name) {
+int Result::printExons(char* file, Gene& g, Reference & ref, int isRunningNormal, char * bkfile, char * bkfileBEDPE, char * bkfileVCF, char * refname, char * sample_name, char* dir) {
 
-
+	std::string filename = createFilename(dir,file);
 	ofstream outFile(filename);
 
 	outFile<<"#Id\t5p\t3P\t5P_Transcipt\t5P_Exon\t5P_Strand\t5P_Exon_Chr\t5P_Exon_Start\t5P_Exon_End\t5P_Exon_Seq\t5P_Exon_150\t3P_Transcript\t3P_Exon\t3P_Exon_Strand\t3P_Exon_Chr\t3P_Exon_Start\t3P_Exon_END\t3P_Exon_Seq\t3P_Exon_150"<<endl;
@@ -1910,7 +1920,7 @@ int Result::printExons(char* filename, Gene& g, Reference & ref, int isRunningNo
     
 	//cout<<"call bk"<<endl;
     	BreakPoint bkobj;
-    	bkobj.getBreakPoints(bkvec,bkfile,bkfileBEDPE,bkfileVCF,refname,ref,sample_name);
+    	bkobj.getBreakPoints(bkvec,bkfile,bkfileBEDPE,bkfileVCF,refname,ref,sample_name,dir);
     	//cout<<"after bk"<<endl;
     
 	return 0;
@@ -2610,9 +2620,10 @@ bool my_sort_for_smc(fusion_junction_2_t i, fusion_junction_2_t j) // id, junc5p
     }
 
 }
-int Result::getAllJunctionsStep6(char * filename,Gene& g, Reference & ref) {
+int Result::getAllJunctionsStep6(char * file,Gene& g, Reference & ref, char* dir) {
     Updator updator;
     sort(fjtvec2.begin(),fjtvec2.end(),my_sort_for_smc);
+	std::string filename = createFilename(dir,file);
     ofstream outFile(filename);
 
     int last_pos5=-1;
@@ -2767,7 +2778,7 @@ int Result::getAllJunctionsStep6(char * filename,Gene& g, Reference & ref) {
 }
 
 
-int Result::printFcirc(std::string filename, Gene & g, Reference & ref) {
+int Result::printFcirc(char* file, Gene & g, Reference & ref, char* dir) {
 	Updator updator;
 
 
@@ -2914,6 +2925,7 @@ int Result::printFcirc(std::string filename, Gene & g, Reference & ref) {
 		}
 	}
 	//Print results
+	std::string filename = createFilename(dir,file);
 	ofstream outFile(filename);
 	//Header
 	outFile<<"#Id\tFusionName\tFusion5Prime.Backsplice\tFusion3Prime.Backsplice\tFusion5Prime.Breakpoint\tFusion3Prime.Breakpoint\n";

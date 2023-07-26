@@ -355,6 +355,8 @@ typedef struct
     
         int minDel;
 
+	char * dir;
+
 } options_t;
 
 typedef struct
