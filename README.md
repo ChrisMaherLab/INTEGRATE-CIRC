@@ -5,6 +5,7 @@ INTEGRATE-Circ is a fusion junction detection tool, capable of identifying gene 
 INTEGRATE-Circ is developed at the [Christopher Maher Lab](http://www.maherlab.com/) at [Washington University in St. Louis](http://www.wustl.edu).
 
 For additional information, see the published manuscript:
+
 Jace Webster, Hung Mai, Amy Ly, Christopher Maher. INTEGRATE-Circ and INTEGRATE-Vis: unbiased detection and visualization of fusion-derived circular RNA. *Bioinformatics*, Volume 39, Issue 9, September 2023. doi: [10.1093/bioinformatics/btad569](https://doi.org/10.1093/bioinformatics/btad569)
 ***
 
